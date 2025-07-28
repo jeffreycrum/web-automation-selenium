@@ -10,8 +10,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 class WebAutomation:
     TEST_URL = "https://demoqa.com/login"
-    USER = "jec"
-    PASS = "Testuser@1"
 
     def __init__(self):
         chrome_options = Options()
@@ -36,7 +34,7 @@ class WebAutomation:
 
         self.driver.execute_script("arguments[0].click();", login_button)
 
-    def fill_form(self):
+    def fill_form(self, user, password, curr_address, perm_address):
         element = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located((By.XPATH, '//*[@id="app"]/div/div/div/div[1]/div/div/div[1]/span/div')))
         element.click()
@@ -52,10 +50,10 @@ class WebAutomation:
             EC.visibility_of_element_located((By.ID, 'permanentAddress')))
         submit_button = self.driver.find_element(By.ID, "submit")
 
-        fullname_field.send_keys("Joe Snow")
-        email_field.send_keys("j_snow@yahoo.com")
-        curr_address_field.send_keys("123 3rd St, Tampa, FL 33640")
-        perm_address_field.send_keys("1234 4th St, Tampa, FL 33644")
+        fullname_field.send_keys(user)
+        email_field.send_keys(password)
+        curr_address_field.send_keys(curr_address)
+        perm_address_field.send_keys(perm_address)
         self.driver.execute_script("arguments[0].click();", submit_button)
 
     def download(self):
@@ -68,13 +66,13 @@ class WebAutomation:
     def close(self):
         self.driver.quit()
 
-    def run_all(self):
-        auto = WebAutomation()
-        auto.login(WebAutomation.USER, WebAutomation.PASS)
-        auto.fill_form()
-        auto.download()
-        auto.close()
 
-
-a = WebAutomation()
-a.run_all()
+if __name__ == "__main__":
+    a = WebAutomation()
+    a.login("jec", "Testuser@1")
+    a.fill_form("Joe Snow",
+                "j_snow@yahoo.com",
+                "123 3rd St, Tampa, FL 33640",
+                "1234 4th St, Tampa, FL 33644")
+    a.download()
+    a.close()
